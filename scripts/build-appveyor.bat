@@ -67,7 +67,7 @@ SET ICU_DATA=%MAPNIK_SDK%\share\icu
 :: actually install deps + compile node-mapnik
 ECHO building node-mapnik
 :: --msvs_version=2015 is passed along to node-gyp here
-CALL npm install --build-from-source --msvs_version=2015 --loglevel=http
+CALL npm install --build-from-source --msvs_version=2015 --loglevel=http --node_shared=true
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 FOR /F "tokens=*" %%i in ('CALL node_modules\.bin\node-pre-gyp reveal module_path --silent') DO SET NODEMAPNIK_BINDING_DIR=%%i
