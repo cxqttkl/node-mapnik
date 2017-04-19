@@ -8,29 +8,18 @@ environment:
     - nodejs_version: 4.8.1
       msvs_toolset: 14
       platform: x64
-      os: Visual Studio 2015
     - nodejs_version: 4.8.1
       msvs_toolset: 14
       platform: x86
-      os: Visual Studio 2015
     # Fixed at version until https://github.com/nodejs/node/issues/12244 is resolved by nodejs
     - nodejs_version: 6.10.1
       msvs_toolset: 14
       platform: x64
-      os: Visual Studio 2015
     - nodejs_version: 6.10.1
       msvs_toolset: 14
       platform: x86
-      os: Visual Studio 2015
-    # 2017 builds
-    - nodejs_version: 4.8.1
-      msvs_toolset: 14
-      platform: x64
-      os: Visual Studio 2017
-    - nodejs_version: 6.10.1
-      msvs_toolset: 14
-      platform: x64
-      os: Visual Studio 2017
+
+os: Visual Studio 2015
 
 clone_depth: 20
 
