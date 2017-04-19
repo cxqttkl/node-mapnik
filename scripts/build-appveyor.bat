@@ -4,6 +4,8 @@ SET EL=0
 
 ECHO =========== %~f0 ===========
 
+powershell Install-Product node %nodejs_version% %PLATFORM%
+
 SET MAPNIK_GIT=
 FOR /F "tokens=*" %%i in ('node -e "console.log(require(""./package.json"").mapnik_version)"') DO SET MAPNIK_GIT=%%i
 
