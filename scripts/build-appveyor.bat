@@ -27,11 +27,8 @@ IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 :: HACK!! to make node@4.x x86 builds work
 :: see: https://github.com/mapbox/node-pre-gyp/issues/209#issuecomment-217690537
-IF %NODE_MAJOR% NEQ 4 GOTO NO_HACK_NEEDED
 CALL npm config set -g cafile=package.json
 CALL npm config set -g strict-ssl=false
-
-:NO_HACK_NEEDED
 
 ECHO activating VS command prompt...
 IF /I %platform% == x64 CALL "C:\Program Files (x86)\Microsoft Visual Studio %msvs_toolset%.0\VC\vcvarsall.bat" amd64
