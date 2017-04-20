@@ -28,7 +28,7 @@ install:
 
 artifacts:
   - path: build\stage\**\*.gz
-  - name: package
+    name: package
 
 build: off
 test: off
