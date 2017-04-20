@@ -24,8 +24,11 @@ os: Visual Studio 2015
 clone_depth: 20
 
 install:
-  - git submodule update --init
   - scripts\build-appveyor.bat
+
+artifacts:
+  - path: build\stage\**\*.gz
+  - name: package
 
 build: off
 test: off

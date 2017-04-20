@@ -4,7 +4,13 @@ SET EL=0
 
 ECHO =========== %~f0 ===========
 
-powershell Install-Product node %nodejs_version% %PLATFORM%
+git submodule update --init
+IF %ERRORLEVEL% NEQ 0 ECHO could not update submodules && GOTO ERROR
+
+:: only run Install-Product on AppVeyor
+:: TODO: check requested node version on local builds and bail if it doesn't match
+IF /I "%APPVEYOR%"=="True" powershell Install-Product node %nodejs_version% %PLATFORM%
+IF %ERRORLEVEL% NEQ 0 ECHO could not install requested node version && GOTO ERROR
 
 SET MAPNIK_GIT=
 FOR /F "tokens=*" %%i in ('node -e "console.log(require(""./package.json"").mapnik_version)"') DO SET MAPNIK_GIT=%%i
@@ -102,14 +108,18 @@ IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 IF NOT "%CM%" == "%CM:[republish binary]=%" (ECHO republishing v140 ... && CALL node_modules\.bin\node-pre-gyp package unpublish publish --toolset=v140) ELSE (ECHO not republishing)
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
+ECHO packaging ...
+CALL node_modules\.bin\node-pre-gyp package
+IF %ERRORLEVEL% NEQ 0 ECHO error during packaging && GOTO ERROR
+
 :: publish binaries to default path
 :: in the future this may change depending on:
 :: 1) what visual studio versions we support
 :: 2) how visual studio binaries are or are not compatible with each other
 :: more details: https://github.com/mapnik/node-mapnik/issues/756
-IF NOT "%CM%" == "%CM:[publish binary]=%" (ECHO publishing... && CALL node_modules\.bin\node-pre-gyp package publish) ELSE (ECHO not publishing)
+IF NOT "%CM%" == "%CM:[publish binary]=%" (ECHO publishing... && CALL node_modules\.bin\node-pre-gyp publish) ELSE (ECHO not publishing)
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
-IF NOT "%CM%" == "%CM:[republish binary]=%" (ECHO republishing ... && CALL node_modules\.bin\node-pre-gyp package unpublish publish) ELSE (ECHO not republishing)
+IF NOT "%CM%" == "%CM:[republish binary]=%" (ECHO republishing ... && CALL node_modules\.bin\node-pre-gyp unpublish publish) ELSE (ECHO not republishing)
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 
 
